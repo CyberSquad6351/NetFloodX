@@ -1,5 +1,4 @@
-# FloodX - Network Stress Testing Tool
-
+# NetFloodX - Network Stress Testing Tool
 
 
 ## ⚠️ DISCLAIMER
@@ -12,21 +11,22 @@ By using this tool, you agree to use it responsibly and ethically, only on netwo
 
 ## Description
 
-FloodX is a comprehensive network stress testing tool designed to help network administrators and security professionals evaluate the resilience of their network infrastructure. The tool includes multiple attack simulations including SYN floods and UDP floods to test network stability under stress conditions.
+NetFloodX is a comprehensive network stress testing tool designed to help network administrators and security professionals evaluate the resilience of their network infrastructure. The tool includes multiple attack simulations including SYN floods and UDP floods to test network stability under stress conditions.
 
 ## Features
 
-- **SYN Flood Attack**: Tests TCP connection handling by sending numerous TCP SYN packets
-- **UDP Flood Attack**: Tests UDP packet processing capabilities
-- **Combined Attack Mode**: Simultaneously performs SYN and UDP flood attacks
-- **Customizable Parameters**: Adjust packet size, intervals, and more
-- **Performance Metrics**: Real-time reports on packets sent and transmission rates
+- **SYN Flood Testing**: Tests TCP connection handling by sending numerous TCP SYN packets
+- **UDP Flood Testing**: Tests UDP packet processing capabilities
+- **Combined Test Mode**: Simultaneously performs SYN and UDP flood tests
+- **Multi-threading**: Uses multiple threads to maximize testing capabilities
+- **User-friendly Interface**: Simple command-line menu for easy operation
+- **Cross-platform Support**: Works on major operating systems with Python 3
 
 ## Requirements
 
 - Python 3.6+
-- Linux operating system (recommended)
-- Root/Administrator privileges
+- Administrative/root privileges (required for raw socket creation)
+- External scripts: Syn.py and Udp.py (included in the package)
 
 ## Installation
 
@@ -35,10 +35,10 @@ FloodX is a comprehensive network stress testing tool designed to help network a
 git clone https://github.com/cybersquad6351/NetFloodX.git
 
 # Change to the directory
-cd FloodX
+cd NetFloodX
 
-# Make the main script executable
-chmod +x FloodX.py
+# Make sure the scripts are executable
+chmod +x NetFloodX.py Syn.py Udp.py
 ```
 
 ## Usage
@@ -46,48 +46,50 @@ chmod +x FloodX.py
 The tool requires root privileges to create raw sockets:
 
 ```bash
-sudo python3 FloodX.py
+sudo python3 NetFloodX.py
 ```
 
-### SYN Flood Script Usage
+After launching the tool:
+1. Enter the target IP address and port
+2. Select the type of stress test from the menu
+3. The tool will execute the selected test
+4. Press Ctrl+C to stop the test
+
+### Main Menu Options
+
+1. **SYN Flood Test**: Launches TCP SYN flood testing
+2. **UDP Flood Test**: Launches UDP flood testing
+3. **Combined Test**: Launches both SYN and UDP flood tests simultaneously
+4. **Change Target**: Modify the target IP and port
+5. **Exit**: Quit the application
+
+### SYN Flood Script Usage (Standalone)
 
 ```bash
-sudo python3 Syn.py -t TARGET_IP -p TARGET_PORT [-s SOURCE_IP] [-i REPORT_INTERVAL]
+sudo python3 Syn.py -t TARGET_IP -p TARGET_PORT
 ```
 
-Options:
-- `-t, --target`: Target IP address
-- `-p, --port`: Target port (default: 80)
-- `-s, --source`: Source IP address (default: auto-detect)
-- `-i, --interval`: Reporting interval in packets (default: 1000)
-
-### UDP Flood Script Usage
+### UDP Flood Script Usage (Standalone)
 
 ```bash
-python3 Udp.py -t TARGET_IP [-p TARGET_PORT] [-s PACKET_SIZE] [-n PACKET_COUNT] [-i INTERVAL]
+sudo python3 Udp.py -t TARGET_IP -p TARGET_PORT
 ```
-
-Options:
-- `-t, --target`: Target IP address (required)
-- `-p, --port`: Target port (default: 80)
-- `-s, --size`: Packet size in bytes (default: 1024)
-- `-n, --packets`: Number of packets to send (0 for infinite)
-- `-i, --interval`: Delay between packets in seconds (default: 0.01)
 
 ## How It Works
 
-FloodX operates by generating network traffic:
+NetFloodX operates by generating network traffic to test infrastructure resilience:
 
-1. **SYN Floods**: Creates TCP SYN packets with randomized source ports to establish connections that consume resources on the target server.
-2. **UDP Floods**: Sends UDP packets to random or specified ports to consume bandwidth and processing resources.
-3. **Multi-threading**: Uses multiple threads to maximize the traffic generation capability.
+1. **SYN Flood Testing**: Creates TCP SYN packets with randomized source ports to test how servers handle multiple connection attempts.
+2. **UDP Flood Testing**: Sends UDP packets to specified ports to test bandwidth and processing capabilities.
+3. **Multi-threading**: Uses 4 threads per test type to provide comprehensive stress testing.
 
 ## Legitimate Use Cases
 
 - Testing network infrastructure resilience
 - Validating firewall and IDS/IPS configurations
 - Stress testing server applications
-- Research on DDoS mitigation techniques
+- Network capacity planning
+- Security research on DDoS mitigation techniques
 
 ## Developer Information
 
@@ -95,6 +97,11 @@ FloodX operates by generating network traffic:
 - **Email**: mishraaditya.skm14@gmail.com
 - **Website**: [cybersquad6351.netlify.app](https://cybersquad6351.netlify.app)
 - **Instagram**: [@cyber__squad6351](https://www.instagram.com/cyber__squad6351/)
+- **YouTube**: [Cyber_Squad6351](https://www.youtube.com/c/Cyber_Squad6351)
+
+## Version History
+
+- **v1.2 (Open Source Edition)**: Current stable release
 
 ## License
 
